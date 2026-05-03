@@ -9,7 +9,6 @@
   border: var(--input-border-width) solid var(--input-border-color);
   border-radius: var(--input-radius);
   padding: 0 20px;
-  outline: none;
   color: var(--input-text-color);
   background: var(--color-surface);
   font-family: var(--font-login);
@@ -26,7 +25,7 @@
 }
 
 .ui-input--with-right-slot {
-  // padding-right: 70px;
+  padding-right: 70px;
 }
 
 .ui-input--error {

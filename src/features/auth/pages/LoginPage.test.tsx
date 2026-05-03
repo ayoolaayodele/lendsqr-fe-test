@@ -1,6 +1,7 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
+import { describe, expect, it } from 'vitest';
 import LoginPage from './LoginPage';
 
 function renderWithRouter() {
@@ -16,12 +17,15 @@ function renderWithRouter() {
 }
 
 describe('LoginPage', () => {
-  it('shows validation error for empty email on blur', () => {
+  it('shows validation error for empty email on blur', async () => {
+    const user = userEvent.setup();
     renderWithRouter();
-    const emailInput = screen.getByPlaceholderText('Email');
-    fireEvent.blur(emailInput);
 
-    expect(screen.getByText('Email is required')).toBeInTheDocument();
+    const emailInput = screen.getByPlaceholderText('Email');
+    await user.click(emailInput);
+    await user.tab();
+
+    expect(await screen.findByText('Email is required')).toBeInTheDocument();
   });
 
   it('navigates to dashboard on valid submit', async () => {

@@ -13,18 +13,20 @@ export default function Input({
   rightSlot,
   ...rest
 }: InputProps) {
+  const hasRightSlot = Boolean(rightSlot);
+
   return (
     <div className='ui-input-wrap'>
       <input
         className={classNames(
           'ui-input',
-          rightSlot && 'ui-input--with-right-slot',
+          hasRightSlot && 'ui-input--with-right-slot',
           hasError && 'ui-input--error',
           className,
         )}
         {...rest}
       />
-      {rightSlot ? <div className='ui-input__right-slot'>{rightSlot}</div> : null}
+      {hasRightSlot ? <div className='ui-input__right-slot'>{rightSlot}</div> : null}
     </div>
   );
 }
