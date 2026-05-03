@@ -1,0 +1,46 @@
+.ui-button {
+  border: none;
+  border-radius: var(--button-radius);
+  cursor: pointer;
+  font-family: var(--font-login);
+  font-size: var(--button-text-size-md);
+  font-weight: var(--button-text-weight-semibold);
+  line-height: 1;
+  letter-spacing: var(--action-link-letter-spacing-wide);
+  text-transform: uppercase;
+}
+
+.ui-button--full-width {
+  width: 100%;
+}
+
+.ui-button--primary {
+  height: var(--button-height-md);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+}
+
+.ui-button--primary:hover {
+  filter: brightness(0.97);
+}
+
+.ui-button--primary:active {
+  filter: brightness(0.92);
+}
+
+.ui-button--primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.ui-button--text {
+  background: transparent;
+  color: var(--action-link-color);
+  padding: 0;
+  border-radius: 0;
+  height: auto;
+  font-size: var(--action-link-size-sm);
+  font-weight: var(--action-link-weight-semibold);
+  line-height: 1;
+  letter-spacing: var(--action-link-letter-spacing-wide);
+}
