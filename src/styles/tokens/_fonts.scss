@@ -1,18 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
 :root {
-  /* Font families */
   --font-login: 'Avenir Next', 'Work Sans', 'Segoe UI', Arial, sans-serif;
   --font-app: 'Work Sans', 'Segoe UI', Arial, sans-serif;
   --font-docs: 'Roboto', 'Work Sans', Arial, sans-serif;
   --font-tabs: 'SF Compact Text', 'Avenir Next', 'Work Sans', 'Segoe UI', sans-serif;
-
-  /* Global type scale */
-  --fs-12: 12px;
-  --fs-14: 14px;
-  --fs-16: 16px;
-  --fs-20: 20px;
-  --fs-40: 40px;
-
-  --fw-400: 400;
-  --fw-600: 600;
-  --fw-700: 700;
 }

@@ -1,0 +1,24 @@
+:root {
+  /* Input tokens */
+  --input-height-md: 50px;
+  --input-border-width: 2px;
+  --input-border-color: var(--color-border-soft);
+  --input-radius: var(--radius-8);
+  --input-text-size: var(--fs-14);
+  --input-text-weight: var(--fw-400);
+  --input-text-color: var(--color-text-main);
+
+  /* Button tokens */
+  --button-height-md: 56px;
+  --button-radius: var(--radius-8);
+  --button-primary-bg: var(--color-accent);
+  --button-primary-text: var(--color-text-inverse);
+  --button-text-size-md: var(--fs-14);
+  --button-text-weight-semibold: var(--fw-600);
+
+  /* Link/action tokens */
+  --action-link-size-sm: var(--fs-12);
+  --action-link-weight-semibold: var(--fw-600);
+  --action-link-letter-spacing-wide: 0.1em;
+  --action-link-color: var(--color-accent);
+}

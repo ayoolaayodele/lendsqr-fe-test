@@ -1,0 +1,14 @@
+:root {
+  /* Login-specific typography overrides */
+  --login-title-size: var(--fs-40);
+  --login-title-weight: var(--fw-700);
+  --login-title-line-height: 1;
+  --login-title-letter-spacing: -0.04em;
+
+  --login-subtitle-size: var(--fs-20);
+  --login-subtitle-weight: var(--fw-400);
+  --login-subtitle-line-height: 1;
+  --login-subtitle-letter-spacing: 0;
+
+  --login-shadow: var(--shadow-soft-login);
+}
