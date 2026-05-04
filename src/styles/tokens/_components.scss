@@ -21,4 +21,12 @@
   --action-link-weight-semibold: var(--fw-600);
   --action-link-letter-spacing-wide: 0.1em;
   --action-link-color: var(--color-accent);
+
+  /* App layout tokens */
+  --layout-topbar-height: 100px;
+  /* Sidebar rail width (Figma) */
+  --layout-sidebar-width: 283px;
+  --layout-content-max-width: 1116px;
+  --layout-content-x: 60px;
+  --layout-content-y: 60px;
 }
