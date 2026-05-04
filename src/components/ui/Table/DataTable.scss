@@ -1,0 +1,479 @@
+// src/components/ui/DataTable/DataTable.scss
+@use '../../../styles/tokens/breakpoints' as *;
+
+.data-table {
+  width: 100%;
+  background: var(--color-surface);
+}
+
+.data-table__table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  position: relative;
+}
+
+.data-table__table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.data-table__th {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: var(--font-app);
+  font-weight: var(--fw-600);
+  font-size: var(--fs-12);
+  line-height: 1;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  vertical-align: bottom;
+  color: var(--color-text-main);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+
+  &:hover {
+    color: var(--color-primary);
+  }
+}
+
+.data-table__th-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.data-table__th-filter-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.data-table__th-icon {
+  width: 16px;
+  height: 16px;
+  opacity: 0.6;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.data-table__td {
+  padding: 16px;
+  font-family: var(--font-app);
+  font-weight: var(--fw-400);
+  font-size: var(--fs-14);
+  line-height: 1;
+  letter-spacing: 0;
+  color: var(--color-text-main);
+  border-bottom: 1px solid rgba(33, 63, 125, 0.06);
+}
+
+
+
+.data-table__tr {
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background: var(--color-sidebar-active-bg);
+  }
+
+}
+.data-table__tr:last-child .data-table__td {
+  border-bottom: none;
+}
+
+.data-table__td--actions {
+  position: relative;
+  text-align: right;
+  width: 50px;
+}
+
+.data-table__action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-4);
+  opacity: 1;
+  transition: background 0.2s ease;
+
+  &:hover {
+    background: rgba(33, 63, 125, 0.08);
+  }
+}
+
+.data-table__action-btn img {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.data-table__action-menu {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  z-index: 30;
+  width: 180px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-faint);
+  border-radius: var(--radius-4);
+  box-shadow: var(--shadow-card);
+  padding: 8px 0;
+}
+
+
+.data-table__action-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 16px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-family: var(--font-app);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-400);
+  color: var(--color-text-main);
+  text-align: left;
+  transition: background-color 0.15s ease, color 0.15s ease;
+
+  &:hover {
+    background: var(--color-page-bg);
+  }
+
+  // View Details
+  &:nth-child(1):hover {
+    background: var(--color-sidebar-active-bg);
+    color: var(--color-primary);
+  }
+
+  // Blacklist User
+  &:nth-child(2):hover {
+    background: var(--color-status-blacklisted-bg);
+    color: var(--color-status-blacklisted);
+  }
+
+  // Activate User
+  &:nth-child(3):hover {
+    background: var(--color-status-active-bg);
+    color: var(--color-status-active);
+  }
+}
+
+.data-table__action-menu-item img {
+  width: 20px;
+  height: 20px;
+  transition: opacity 0.15s ease;
+
+  .data-table__action-menu-item:hover & {
+    opacity: 0.8;
+  }
+}
+
+// Filter Popup - Figma exact properties
+.filter-popup {
+  position: absolute;
+  top: 44px;
+  left: 16px;
+  z-index: 60;
+  width: 270px;
+  max-height: 600px;
+  overflow-y: auto;
+  background: #FFFFFF;
+  border: 1px solid rgba(84, 95, 125, 0.14);
+  border-radius: var(--radius-4);
+  box-shadow: 3px 5px 20px 0px rgba(0, 0, 0, 0.04);
+  padding: 24px 20px;
+}
+
+.filter-popup__field {
+  margin-bottom: 16px;
+}
+
+.filter-popup__label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-app);
+  font-weight: var(--fw-500);
+  font-size: var(--fs-14);
+  color: var(--color-text-main);
+  text-transform: none;
+}
+
+.filter-popup__input-wrap {
+  position: relative;
+}
+
+.filter-popup__input,
+.filter-popup__select {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid rgba(33, 63, 125, 0.2);
+  border-radius: var(--radius-8);
+  font-family: var(--font-app);
+  font-size: var(--fs-14);
+  color: var(--color-text-main);
+  background: var(--color-surface);
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: var(--color-text-muted);
+    text-transform: none;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+}
+
+.filter-popup__input--date {
+  padding-right: 36px;
+}
+
+.filter-popup__date-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.filter-popup__actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.filter-popup__btn {
+  flex: 1;
+  height: 40px;
+  border-radius: var(--radius-8);
+  font-family: var(--font-app);
+  font-weight: var(--fw-600);
+  font-size: var(--fs-14);
+  cursor: pointer;
+  border: none;
+}
+
+.filter-popup__btn--reset {
+  background: transparent;
+  border: 1px solid rgba(33, 63, 125, 0.2);
+  color: var(--color-text-main);
+}
+
+.filter-popup__btn--filter {
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+}
+
+// react-datepicker overrides
+.react-datepicker-wrapper {
+  width: 100%;
+}
+
+.react-datepicker__input-container {
+  width: 100%;
+}
+
+.react-datepicker {
+  font-family: var(--font-app);
+  border: 1px solid var(--color-border-soft);
+  border-radius: var(--radius-4);
+  box-shadow: var(--shadow-card);
+}
+
+.react-datepicker__header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border-soft);
+  padding-top: 10px;
+}
+
+.react-datepicker__current-month {
+  font-family: var(--font-app);
+  font-weight: var(--fw-600);
+  font-size: var(--fs-14);
+  color: var(--color-primary);
+}
+
+.react-datepicker__day-name {
+  font-family: var(--font-app);
+  font-weight: var(--fw-500);
+  font-size: var(--fs-12);
+  color: var(--color-text-main);
+}
+
+.react-datepicker__day {
+  font-family: var(--font-app);
+  font-weight: var(--fw-400);
+  font-size: var(--fs-14);
+  color: var(--color-text-main);
+  border-radius: 50%;
+
+  &:hover {
+    background: rgba(57, 205, 204, 0.2);
+  }
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected {
+  background: var(--color-accent);
+  color: var(--color-text-inverse);
+
+  &:hover {
+    background: var(--color-accent);
+  }
+}
+
+.react-datepicker__day--today {
+  font-weight: var(--fw-600);
+  color: var(--color-primary);
+}
+
+.react-datepicker__navigation-icon::before {
+  border-color: var(--color-text-main);
+}
+
+// Pagination
+.data-table__pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 24px;
+  padding-top: 16px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+// In src/components/ui/DataTable/DataTable.scss
+
+.data-table__showing {
+  font-family: var(--font-app);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-400);
+  color: var(--color-text-main);
+}
+
+.data-table__showing-select {
+  margin: 0 4px;
+  padding: 4px 8px;
+  border: none;
+  border-radius: var(--radius-4);
+  background: rgba(33, 63, 125, 0.1);
+  font-family: var(--font-app);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-500);
+  color: var(--color-primary);
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+}
+.data-table__pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+
+.data-table__page-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: rgba(33, 63, 125, 0.1); /* #213F7D1A */
+  border-radius: var(--radius-4);
+  cursor: pointer;
+
+  &:hover:not(:disabled) {
+    background: rgba(33, 63, 125, 0.2);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    background: rgba(33, 63, 125, 0.1);
+  }
+}
+
+.data-table__page-btn img {
+  width: 14px;
+  height: 14px;
+}
+.data-table__page-btn img {
+  width: 14px;
+  height: 14px;
+}
+
+.data-table__page-numbers {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.data-table__page-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: var(--radius-4);
+  font-family: var(--font-app);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-400);
+  color: var(--color-text-main);
+
+  &:hover {
+    background: var(--color-page-bg);
+  }
+
+  &.active {
+    color: var(--color-text-main);
+    font-weight: var(--fw-600);
+  }
+}
+
+@include down($bp-tablet) {
+  .data-table__th,
+  .data-table__td {
+    padding: 12px 8px;
+    font-size: var(--fs-12);
+  }
+
+  .data-table__pagination {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .filter-popup {
+    left: 8px;
+    width: calc(100% - 16px);
+    max-width: 270px;
+  }
+}
