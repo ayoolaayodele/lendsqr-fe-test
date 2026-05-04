@@ -6,7 +6,6 @@
   /* Surfaces */
   --color-surface: #ffffff;
   --color-app-bg: #fbfbfb;
-  --color-page-bg: #f8f8f8;
   --color-sidebar-active-bg: #39cdcc0f;
 
   /* Text */
@@ -17,4 +16,16 @@
   /* Borders */
   --color-border-soft: #545f7d26;
   --color-border-faint: #213f7d0f;
+
+
+    /* ✅ Status colors */
+  --color-status-active: #39CD62;
+  --color-status-active-bg: rgba(57, 205, 98, 0.06);
+  --color-status-inactive: #545F7D;
+  --color-status-inactive-bg: rgba(84, 95, 125, 0.06);
+  --color-status-pending: #E9B200;
+  --color-status-pending-bg: rgba(233, 178, 0, 0.06);
+  --color-status-blacklisted: #E4033B;
+  --color-status-blacklisted-bg: rgba(228, 3, 59, 0.06);
+
 }

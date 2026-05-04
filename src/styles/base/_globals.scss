@@ -4,14 +4,14 @@
 
 html {
   min-width: 320px;
-  background: var(--color-page-bg);
+  background: var(--color-app-bg);
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: var(--color-page-bg);
+  background: var(--color-app-bg);
   color: var(--color-text-main);
   font-family: var(--font-app);
   text-rendering: optimizeLegibility;
