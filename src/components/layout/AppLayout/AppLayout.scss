@@ -1,6 +1,8 @@
+@use '../../../styles/tokens/breakpoints' as *;
+
 .app-layout {
   min-height: 100vh;
-  background: var(--color-page-bg);
+  background: var(--color-app-bg);
 }
 
 .app-layout__main {
@@ -10,17 +12,17 @@
 }
 
 .app-layout__content {
-  width: min(100%, var(--layout-content-max-width));
+  width: 100%;
 }
 
-@media (max-width: 1024px) {
+@include down($bp-laptop) {
   .app-layout__main {
     margin-left: 0;
     padding: calc(var(--layout-topbar-height) + 32px) 24px 40px;
   }
 }
 
-@media (max-width: 640px) {
+@include down($bp-tablet) {
   .app-layout__main {
     padding: calc(var(--layout-topbar-height) + 24px) 16px 32px;
   }

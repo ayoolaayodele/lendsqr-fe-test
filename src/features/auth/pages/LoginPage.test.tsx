@@ -8,7 +8,7 @@ function renderWithRouter() {
   const router = createMemoryRouter(
     [
       { path: '/login', element: <LoginPage /> },
-      { path: '/dashboard', element: <main>Dashboard Page</main> },
+      { path: '/users', element: <main>Users Page</main> },
     ],
     { initialEntries: ['/login'] },
   );
@@ -36,6 +36,6 @@ describe('LoginPage', () => {
     await user.type(screen.getByPlaceholderText('Password'), 'password123');
     await user.click(screen.getByRole('button', { name: 'LOG IN' }));
 
-    expect(await screen.findByText('Dashboard Page')).toBeInTheDocument();
+    expect(await screen.findByText('Users Page')).toBeInTheDocument(); 
   });
 });

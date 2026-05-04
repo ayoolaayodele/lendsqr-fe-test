@@ -1,19 +1,14 @@
 import { useState } from 'react';
 import { ErrorMessage, Field, Form, Formik, type FieldProps } from 'formik';
 import { useNavigate } from 'react-router-dom';
-import * as Yup from 'yup';
 import Button from '../../../components/ui/Button/Button';
 import Input from '../../../components/ui/Input/Input';
 import logoLendsqr from '../../../assets/icons/logo-lendsqr.svg';
 import loginIllustration from '../../../assets/images/img-login-illustration.svg';
+import type { LoginValues } from '../validation/loginValidation';
+import { loginSchema } from '../validation/loginValidation';
 import './LoginPage.scss';
 
-const loginSchema = Yup.object({
-  email: Yup.string().trim().required('Email is required').email('Enter a valid email address'),
-  password: Yup.string().required('Password is required'),
-});
-
-type LoginValues = Yup.InferType<typeof loginSchema>;
 
 export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +34,7 @@ export default function LoginPage() {
             validateOnBlur
             validateOnChange
             onSubmit={() => {
-              navigate('/dashboard');
+              navigate('/users');
             }}
           >
             {({ isValid, dirty }) => (

@@ -1,0 +1,76 @@
+@use '../../../styles/tokens/breakpoints' as *;
+
+.users-page {
+  width: 100%;
+}
+
+.users-page__title {
+  margin: 0 0 40px;
+  color: var(--color-primary);
+  font-family: var(--font-app);
+  font-weight: var(--fw-500);
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.users-page__stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 26px;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.users-page__table-section {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-faint);
+  border-radius: var(--radius-4);
+  box-shadow: var(--shadow-card);
+  padding: 24px 30px;
+}
+
+@include down($bp-desktop) {
+  .users-page__stats {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+}
+
+@include down($bp-laptop) {
+  .users-page__stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .users-page__table-section {
+    padding: 20px 24px;
+  }
+}
+
+@include down($bp-tablet) {
+  .users-page__title {
+    margin-bottom: 30px;
+    font-size: 22px;
+  }
+
+  .users-page__stats {
+    margin-bottom: 30px;
+  }
+}
+
+@include down($bp-mobile) {
+  .users-page__title {
+    margin-bottom: 24px;
+    font-size: 20px;
+  }
+
+  .users-page__stats {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .users-page__table-section {
+    padding: 16px;
+  }
+}
