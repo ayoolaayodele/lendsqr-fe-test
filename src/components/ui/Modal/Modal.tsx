@@ -1,4 +1,4 @@
-import { useEffect, type ReactNode } from 'react';
+import { useEffect } from 'react';
 import classNames from 'classnames';
 import './Modal.scss';
 
