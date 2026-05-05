@@ -28,7 +28,38 @@ describe('LoginPage', () => {
     expect(await screen.findByText('Email is required')).toBeInTheDocument();
   });
 
-  it('navigates to dashboard on valid submit', async () => {
+  it('shows validation error for invalid email format', async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+
+    const emailInput = screen.getByPlaceholderText('Email');
+    await user.type(emailInput, 'invalid-email');
+    await user.tab();
+
+    expect(await screen.findByText('Enter a valid email address')).toBeInTheDocument();
+  });
+
+  it('disables login button when form is empty', () => {
+    renderWithRouter();
+
+    const submitButton = screen.getByRole('button', { name: 'LOG IN' });
+    expect(submitButton).toBeDisabled();
+  });
+
+  it('toggles password visibility', async () => {
+    const user = userEvent.setup();
+    renderWithRouter();
+
+    const passwordInput = screen.getByPlaceholderText('Password');
+    expect(passwordInput).toHaveAttribute('type', 'password');
+
+    const toggleButton = screen.getByRole('button', { name: 'SHOW' });
+    await user.click(toggleButton);
+
+    expect(passwordInput).toHaveAttribute('type', 'text');
+  });
+
+  it('navigates to users page on valid submit', async () => {
     const user = userEvent.setup();
     renderWithRouter();
 
@@ -36,6 +67,6 @@ describe('LoginPage', () => {
     await user.type(screen.getByPlaceholderText('Password'), 'password123');
     await user.click(screen.getByRole('button', { name: 'LOG IN' }));
 
-    expect(await screen.findByText('Users Page')).toBeInTheDocument(); 
+    expect(await screen.findByText('Users Page')).toBeInTheDocument();
   });
 });
