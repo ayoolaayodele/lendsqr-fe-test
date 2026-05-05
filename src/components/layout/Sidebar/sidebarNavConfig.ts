@@ -1,11 +1,11 @@
 import auditLogsIcon from '../../../assets/icons/icon-audit.svg';
-import loanProductsIcon from '../../../assets/icons/icon-bank.svg';
 import briefcaseIcon from '../../../assets/icons/icon-briefcase.svg';
 import chevronIcon from '../../../assets/icons/icon-chevron-down-topbar.svg';
-import feesChargesIcon from '../../../assets/icons/icon-fees.svg';
 import feesPricingIcon from '../../../assets/icons/icon-fees-pricing.svg';
+import feesChargesIcon from '../../../assets/icons/icon-fees.svg';
 import decisionModelsIcon from '../../../assets/icons/icon-handshake.svg';
 import homeIcon from '../../../assets/icons/icon-home.svg';
+import loanProductsIcon from '../../../assets/icons/icon-loan-product.svg';
 import loanRequestsIcon from '../../../assets/icons/icon-loan-request.svg';
 import logoutIcon from '../../../assets/icons/icon-logout.svg';
 import savingsIcon from '../../../assets/icons/icon-piggy.svg';
@@ -27,11 +27,9 @@ export type SidebarNavItem = {
   label: string;
   icon: string;
   to: string;
-  /** Extra classes on the nav link (e.g. muted Systems Messages row). */
   linkClassName?: string;
 };
 
-/** Top-of-sidebar actions (not section lists). */
 export const sidebarChrome = {
   switchOrganizationIcon: briefcaseIcon,
   switchOrganizationChevron: chevronIcon,
