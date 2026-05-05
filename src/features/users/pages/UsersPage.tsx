@@ -1,5 +1,5 @@
 // src/features/users/pages/UsersPage.tsx
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import StatsCard from '../../../components/ui/StatsCard/StatsCard';
 import DataTable from '../../../components/ui/Table/DataTable';
 import Spinner from '../../../components/ui/Spinner/Spinner';
@@ -13,6 +13,8 @@ export default function UsersPage() {
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get('search') || '';
   const { users, isLoading, error } = useFilteredUsers(searchQuery);
+
+    const navigate = useNavigate();
 
   return (
     <section className="users-page">
@@ -39,7 +41,13 @@ export default function UsersPage() {
             <p className="users-page__error-message">{error.message}</p>
           </div>
         )}
-        {!isLoading && !error && <DataTable<User> columns={userColumns} data={users} />}
+        {!isLoading && !error && (
+          <DataTable<User>
+            columns={userColumns}
+            data={users}
+            onRowAction={(user) => navigate(`/users/${user.id}`)}
+          />
+        )}
       </div>
     </section>
   );

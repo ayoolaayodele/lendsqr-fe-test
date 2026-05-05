@@ -34,7 +34,11 @@ export default function TableRow<T extends { id: string; username?: string }>({
 
   return (
     <>
-      <tr className="data-table__tr">
+      <tr
+        className="data-table__tr"
+        onClick={() => onRowAction?.(item)}
+        style={{ cursor: 'pointer' }}
+      >
         {columns.map((col) => (
           <td
             key={col.key as string}
@@ -46,7 +50,7 @@ export default function TableRow<T extends { id: string; username?: string }>({
             {col.render ? col.render(item) : String(item[col.key as keyof T] ?? '')}
           </td>
         ))}
-        <td className="data-table__td data-table__td--actions">
+        <td className="data-table__td data-table__td--actions" onClick={(e) => e.stopPropagation()}>
           <button
             className="data-table__action-btn"
             type="button"
