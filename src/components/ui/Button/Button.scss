@@ -10,6 +10,23 @@
   text-transform: uppercase;
 }
 
+
+.ui-button--outline {
+  height: 40px;
+  padding: 0 16px;
+  background: transparent;
+  border: 1px solid;
+  font-family: var(--font-app);
+  font-weight: var(--fw-600);
+  font-size: var(--fs-14);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
+
 .ui-button--full-width {
   width: 100%;
 }

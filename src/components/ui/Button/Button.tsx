@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import './Button.scss';
 
-type ButtonVariant = 'primary' | 'text';
+type ButtonVariant = 'primary' | 'text' | 'outline';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;

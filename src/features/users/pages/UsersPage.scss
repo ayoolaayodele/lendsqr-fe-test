@@ -72,7 +72,20 @@
   max-width: 400px;
 }
 
-// In src/features/users/pages/UsersPage.scss
+.user-detail__guarantor-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px 16px;
+  padding-bottom: 30px;
+  margin-bottom: 30px;
+  border-bottom: 1px solid var(--color-border-faint);
+
+  &:last-child {
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+  }
+}
 
 .users-page__pagination {
   display: flex;
