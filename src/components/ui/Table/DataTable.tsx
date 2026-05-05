@@ -1,19 +1,16 @@
-import { useState, useRef, useEffect } from 'react';
 import classNames from 'classnames';
+import { useEffect, useRef, useState } from 'react';
 import DatePicker from 'react-datepicker';
-import Modal from '../Modal/Modal';
-import filterIcon from '../../../assets/icons/icon-filter.svg';
-import kebabIcon from '../../../assets/icons/icon-kebab-vertical.svg';
-import eyeIcon from '../../../assets/icons/icon-eye.svg';
-import blacklistIcon from '../../../assets/icons/icon-blacklist-user.svg';
-import activateIcon from '../../../assets/icons/ icon-activate-user.svg';
-import calendarIcon from '../../../assets/icons/icon-calendar.svg';
-import prevIcon from '../../../assets/icons/icon-prev.svg';
-import nextIcon from '../../../assets/icons/icon-next.svg';
-
 import 'react-datepicker/dist/react-datepicker.css';
-
+import calendarIcon from '../../../assets/icons/icon-calendar.svg';
+import filterIcon from '../../../assets/icons/icon-filter.svg';
+import nextIcon from '../../../assets/icons/icon-next.svg';
+import prevIcon from '../../../assets/icons/icon-prev.svg';
 import './DataTable.scss';
+import TableRow from './TableRow';
+import { useTableFilters } from './hooks/useTableFilters';
+import { useTablePagination } from './hooks/useTablePagination';
+import { useTableSort } from './hooks/useTableSort';
 
 interface Column<T> {
   key: keyof T | string;
@@ -36,73 +33,34 @@ export default function DataTable<T extends { id: string; username?: string }>({
   data,
   onRowAction,
 }: DataTableProps<T>) {
-  const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(10);
-  const [sortKey, setSortKey] = useState<string | null>(null);
-  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
-  const [activeRow, setActiveRow] = useState<string | null>(null);
   const [showFilter, setShowFilter] = useState(false);
-  const [filters, setFilters] = useState<Record<string, string>>({});
   const filterRef = useRef<HTMLDivElement>(null);
+  const { filters, localFilters, handleFilterChange, handleFilterImmediate, resetFilters } =
+    useTableFilters();
+  const { sortKey, sortDir, handleSort } = useTableSort();
 
-  // Modal state
-  const [modalConfig, setModalConfig] = useState<{
-    isOpen: boolean;
-    title: string;
-    message: string;
-    variant: 'confirm' | 'danger';
-    onConfirm: () => void;
-    icon?: string;
-  }>({
-    isOpen: false,
-    title: '',
-    message: '',
-    variant: 'confirm',
-    onConfirm: () => {},
-  });
-
-  // Close filter when clicking outside
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (filterRef.current && !filterRef.current.contains(e.target as Node)) {
-        setShowFilter(false);
-      }
+    const fn = (e: MouseEvent) => {
+      if (filterRef.current && !filterRef.current.contains(e.target as Node)) setShowFilter(false);
     };
-    if (showFilter) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    if (showFilter) document.addEventListener('mousedown', fn);
+    return () => document.removeEventListener('mousedown', fn);
   }, [showFilter]);
 
-  const handleSort = (key: string) => {
-    if (sortKey === key) {
-      setSortDir(sortDir === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortKey(key);
-      setSortDir('asc');
-    }
-  };
-
-  const handleFilterSubmit = () => {
-    setShowFilter(false);
-    setPage(1);
-  };
-
-  const handleReset = () => {
-    setFilters({});
-    setShowFilter(false);
-    setPage(1);
-  };
-
-  // Apply filters
   const filteredData = data.filter((item) => {
     return Object.entries(filters).every(([key, value]) => {
       if (!value) return true;
 
-      // Special handling for date fields
       if (key === 'dateJoined' && value) {
         const itemDate = new Date(item[key as keyof T] as string);
         const filterDate = new Date(value);
+        if (/^\d{4}$/.test(value)) return itemDate.getFullYear() === parseInt(value);
+        if (/^[A-Za-z]+\s\d{4}$/.test(value)) {
+          const itemMonth = itemDate.toLocaleString('default', { month: 'short' });
+          const itemYear = itemDate.getFullYear().toString();
+          const [filterMonth] = value.split(' ');
+          return itemMonth === filterMonth && itemYear === value.split(' ')[1];
+        }
         return (
           itemDate.getFullYear() === filterDate.getFullYear() &&
           itemDate.getMonth() === filterDate.getMonth() &&
@@ -110,25 +68,33 @@ export default function DataTable<T extends { id: string; username?: string }>({
         );
       }
 
+      if (key === 'phone') {
+        const raw = String(item[key as keyof T] ?? '');
+        return (
+          (raw.startsWith('0') ? raw : `0${raw}`).includes(value.toLowerCase()) ||
+          raw.includes(value.toLowerCase())
+        );
+      }
+
       const itemValue = String(item[key as keyof T] ?? '').toLowerCase();
-      return itemValue.includes(value.toLowerCase());
+      const col = columns.find((c) => c.key === key);
+      return col?.filterType === 'select'
+        ? itemValue === value.toLowerCase()
+        : itemValue.includes(value.toLowerCase());
     });
   });
 
-  // Apply sorting
   const sortedData = [...filteredData].sort((a, b) => {
     if (!sortKey) return 0;
     const aVal = a[sortKey as keyof T];
     const bVal = b[sortKey as keyof T];
-    if (aVal < bVal) return sortDir === 'asc' ? -1 : 1;
-    if (aVal > bVal) return sortDir === 'asc' ? 1 : -1;
-    return 0;
+    return (aVal < bVal ? -1 : 1) * (sortDir === 'asc' ? 1 : -1);
   });
 
-  // Apply pagination
-  const start = (page - 1) * perPage;
+  const { page, perPage, totalPages, start, pageNumbers, setPage, setPerPage } = useTablePagination(
+    filteredData.length,
+  );
   const paginatedData = sortedData.slice(start, start + perPage);
-  const totalPages = Math.ceil(filteredData.length / perPage);
 
   return (
     <div className="data-table">
@@ -139,7 +105,10 @@ export default function DataTable<T extends { id: string; username?: string }>({
               {columns.map((col) => (
                 <th
                   key={col.key as string}
-                  className="data-table__th"
+                  className={classNames('data-table__th', {
+                    'data-table__th--org': col.key === 'organization',
+                    'data-table__th--date': col.key === 'dateJoined',
+                  })}
                   onClick={() => col.sortable && handleSort(col.key as string)}
                 >
                   <div className="data-table__th-content">
@@ -163,86 +132,25 @@ export default function DataTable<T extends { id: string; username?: string }>({
             </tr>
           </thead>
           <tbody>
-            {paginatedData.map((item) => (
-              <tr key={item.id} className="data-table__tr">
-                {columns.map((col) => (
-                  <td key={col.key as string} className="data-table__td">
-                    {col.render ? col.render(item) : String(item[col.key as keyof T] ?? '')}
-                  </td>
-                ))}
-                <td className="data-table__td data-table__td--actions">
-                  <button
-                    className="data-table__action-btn"
-                    type="button"
-                    onClick={() => setActiveRow(activeRow === item.id ? null : item.id)}
-                  >
-                    <img src={kebabIcon} alt="Actions" />
-                  </button>
-
-                  {activeRow === item.id && (
-                    <div className="data-table__action-menu">
-                      <button
-                        className="data-table__action-menu-item"
-                        type="button"
-                        onClick={() => {
-                          setActiveRow(null);
-                          onRowAction?.(item);
-                        }}
-                      >
-                        <img src={eyeIcon} alt="" />
-                        View Details
-                      </button>
-                      <button
-                        className="data-table__action-menu-item"
-                        type="button"
-                        onClick={() => {
-                          setActiveRow(null);
-                          setModalConfig({
-                            isOpen: true,
-                            title: 'Blacklist User',
-                            message: `Are you sure you want to blacklist ${item.username || 'this user'}? This action will restrict their access.`,
-                            variant: 'danger',
-                            icon: blacklistIcon,
-                            onConfirm: () => {
-                              console.log('Blacklisted:', item.id);
-                              setModalConfig((prev) => ({ ...prev, isOpen: false }));
-                            },
-                          });
-                        }}
-                      >
-                        <img src={blacklistIcon} alt="" />
-                        Blacklist User
-                      </button>
-                      <button
-                        className="data-table__action-menu-item"
-                        type="button"
-                        onClick={() => {
-                          setActiveRow(null);
-                          setModalConfig({
-                            isOpen: true,
-                            title: 'Activate User',
-                            message: `Are you sure you want to activate ${item.username || 'this user'}? This will restore their full access.`,
-                            variant: 'confirm',
-                            icon: activateIcon,
-                            onConfirm: () => {
-                              console.log('Activated:', item.id);
-                              setModalConfig((prev) => ({ ...prev, isOpen: false }));
-                            },
-                          });
-                        }}
-                      >
-                        <img src={activateIcon} alt="" />
-                        Activate User
-                      </button>
-                    </div>
-                  )}
+            {paginatedData.length > 0 ? (
+              paginatedData.map((item) => (
+                <TableRow key={item.id} item={item} columns={columns} onRowAction={onRowAction} />
+              ))
+            ) : (
+              <tr>
+                <td className="data-table__td data-table__td--empty" colSpan={columns.length + 1}>
+                  <div className="data-table__empty-state">
+                    <p className="data-table__empty-title">No users found</p>
+                    <p className="data-table__empty-message">
+                      Try adjusting your search or filter to find what you're looking for.
+                    </p>
+                  </div>
                 </td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
 
-        {/* Filter Popup */}
         {showFilter && (
           <div className="filter-popup" ref={filterRef} onClick={(e) => e.stopPropagation()}>
             {columns
@@ -253,13 +161,8 @@ export default function DataTable<T extends { id: string; username?: string }>({
                   {col.filterType === 'select' && col.filterOptions ? (
                     <select
                       className="filter-popup__select"
-                      value={filters[col.key as string] || ''}
-                      onChange={(e) =>
-                        setFilters((prev) => ({
-                          ...prev,
-                          [col.key as string]: e.target.value,
-                        }))
-                      }
+                      value={localFilters[col.key as string] || ''}
+                      onChange={(e) => handleFilterImmediate(col.key as string, e.target.value)}
                     >
                       <option value="">Select</option>
                       {col.filterOptions.map((opt) => (
@@ -272,17 +175,20 @@ export default function DataTable<T extends { id: string; username?: string }>({
                     <div className="filter-popup__input-wrap">
                       <DatePicker
                         selected={
-                          filters[col.key as string] ? new Date(filters[col.key as string]) : null
+                          localFilters[col.key as string]
+                            ? new Date(localFilters[col.key as string])
+                            : null
                         }
                         onChange={(date: Date | null) =>
-                          setFilters((prev) => ({
-                            ...prev,
-                            [col.key as string]: date ? date.toISOString() : '',
-                          }))
+                          handleFilterImmediate(col.key as string, date ? date.toISOString() : '')
                         }
                         dateFormat="MMM d, yyyy"
                         placeholderText="Date"
                         className="filter-popup__input filter-popup__input--date"
+                        showYearDropdown
+                        showMonthDropdown
+                        dropdownMode="select"
+                        yearDropdownItemNumber={10}
                       />
                       <img className="filter-popup__date-icon" src={calendarIcon} alt="" />
                     </div>
@@ -292,13 +198,8 @@ export default function DataTable<T extends { id: string; username?: string }>({
                         className="filter-popup__input"
                         type="text"
                         placeholder={col.label}
-                        value={filters[col.key as string] || ''}
-                        onChange={(e) =>
-                          setFilters((prev) => ({
-                            ...prev,
-                            [col.key as string]: e.target.value,
-                          }))
-                        }
+                        value={localFilters[col.key as string] || ''}
+                        onChange={(e) => handleFilterChange(col.key as string, e.target.value)}
                       />
                     </div>
                   )}
@@ -309,14 +210,14 @@ export default function DataTable<T extends { id: string; username?: string }>({
               <button
                 className="filter-popup__btn filter-popup__btn--reset"
                 type="button"
-                onClick={handleReset}
+                onClick={resetFilters}
               >
                 Reset
               </button>
               <button
                 className="filter-popup__btn filter-popup__btn--filter"
                 type="button"
-                onClick={handleFilterSubmit}
+                onClick={() => setShowFilter(false)}
               >
                 Filter
               </button>
@@ -325,73 +226,67 @@ export default function DataTable<T extends { id: string; username?: string }>({
         )}
       </div>
 
-      {/* Pagination */}
-      <div className="data-table__pagination">
-        <div className="data-table__showing">
-          Showing
-          <select
-            className="data-table__showing-select"
-            value={perPage}
-            onChange={(e) => {
-              setPerPage(Number(e.target.value));
-              setPage(1);
-            }}
-          >
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-            <option value={100}>100</option>
-          </select>
-          out of {filteredData.length}
-        </div>
-
-        <div className="data-table__pagination-controls">
-          <button
-            className="data-table__page-btn"
-            type="button"
-            disabled={page === 1}
-            onClick={() => setPage(page - 1)}
-          >
-            <img src={prevIcon} alt="Previous" />
-          </button>
-
-          <div className="data-table__page-numbers">
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
-              <button
-                key={num}
-                className={classNames('data-table__page-number', {
-                  active: num === page,
-                })}
-                type="button"
-                onClick={() => setPage(num)}
-              >
-                {num}
-              </button>
-            ))}
+      {filteredData.length > 0 && (
+        <div className="data-table__pagination">
+          <div className="data-table__showing">
+            Showing
+            <select
+              className="data-table__showing-select"
+              value={perPage}
+              onChange={(e) => {
+                setPerPage(Number(e.target.value));
+              }}
+            >
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+            </select>
+            out of {filteredData.length}
           </div>
 
-          <button
-            className="data-table__page-btn"
-            type="button"
-            disabled={page === totalPages}
-            onClick={() => setPage(page + 1)}
-          >
-            <img src={nextIcon} alt="Next" />
-          </button>
-        </div>
-      </div>
+          <div className="data-table__pagination-controls">
+            <button
+              className="data-table__page-btn"
+              type="button"
+              disabled={page === 1}
+              onClick={() => setPage(page - 1)}
+            >
+              <img src={prevIcon} alt="Previous" />
+            </button>
 
-      {/* Confirmation Modal */}
-      <Modal
-        isOpen={modalConfig.isOpen}
-        onClose={() => setModalConfig((prev) => ({ ...prev, isOpen: false }))}
-        title={modalConfig.title}
-        message={modalConfig.message}
-        variant={modalConfig.variant}
-        onConfirm={modalConfig.onConfirm}
-        icon={modalConfig.icon}
-        confirmLabel={modalConfig.variant === 'danger' ? 'Blacklist' : 'Activate'}
-      />
+            <div className="data-table__page-numbers">
+              {pageNumbers.map((num, idx) =>
+                num === '...' ? (
+                  <span key={`e-${idx}`} className="data-table__page-ellipsis">
+                    ...
+                  </span>
+                ) : (
+                  <button
+                    key={num}
+                    className={classNames('data-table__page-number', {
+                      active: num === page,
+                    })}
+                    type="button"
+                    onClick={() => setPage(num as number)}
+                  >
+                    {num}
+                  </button>
+                ),
+              )}
+            </div>
+
+            <button
+              className="data-table__page-btn"
+              type="button"
+              disabled={page === totalPages}
+              onClick={() => setPage(page + 1)}
+            >
+              <img src={nextIcon} alt="Next" />
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

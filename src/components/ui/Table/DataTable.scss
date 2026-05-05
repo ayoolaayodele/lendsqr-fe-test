@@ -3,22 +3,24 @@
 .data-table {
   width: 100%;
   background: var(--color-surface);
+  position: relative;
 }
 
 .data-table__table-wrap {
   width: 100%;
   overflow-x: auto;
-  position: relative;
+  overflow-y: visible;
 }
 
 .data-table__table {
   width: 100%;
   border-collapse: collapse;
   border-spacing: 0;
+  position: relative;
 }
 
 .data-table__th {
-  padding: 12px 16px;
+  padding: 10px 16px;
   text-align: left;
   font-family: var(--font-app);
   font-weight: var(--fw-600);
@@ -65,7 +67,7 @@
 }
 
 .data-table__td {
-  padding: 16px;
+  padding: 12px 16px;
   font-family: var(--font-app);
   font-weight: var(--fw-400);
   font-size: var(--fs-14);
@@ -75,15 +77,12 @@
   border-bottom: 1px solid rgba(33, 63, 125, 0.06);
 }
 
-
-
 .data-table__tr {
   transition: background-color 0.2s ease;
 
   &:hover {
     background: var(--color-sidebar-active-bg);
   }
-
 }
 .data-table__tr:last-child .data-table__td {
   border-bottom: none;
@@ -133,7 +132,6 @@
   padding: 8px 0;
 }
 
-
 .data-table__action-menu-item {
   display: flex;
   align-items: center;
@@ -148,7 +146,9 @@
   font-weight: var(--fw-400);
   color: var(--color-text-main);
   text-align: left;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
 
   &:hover {
     background: var(--color-page-bg);
@@ -183,19 +183,18 @@
   }
 }
 
-// Filter Popup - Figma exact properties
 .filter-popup {
   position: absolute;
   top: 44px;
   left: 16px;
-  z-index: 60;
+  z-index: 100;
   width: 270px;
   max-height: 600px;
   overflow-y: auto;
-  background: #FFFFFF;
+  background: #ffffff;
   border: 1px solid rgba(84, 95, 125, 0.14);
   border-radius: var(--radius-4);
-  box-shadow: 3px 5px 20px 0px rgba(0, 0, 0, 0.04);
+  box-shadow: 3px 5px 20px 0px rgba(0, 0, 0, 0.15);
   padding: 24px 20px;
 }
 
@@ -351,18 +350,27 @@
   border-color: var(--color-text-main);
 }
 
+.data-table__page-ellipsis {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  font-family: var(--font-app);
+  font-size: var(--fs-14);
+  color: var(--color-text-muted);
+}
+
 // Pagination
 .data-table__pagination {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 24px;
-  padding-top: 16px;
+  margin-top: 16px;
+  padding: 12px 0;
   flex-wrap: wrap;
   gap: 16px;
 }
-
-// In src/components/ui/DataTable/DataTable.scss
 
 .data-table__showing {
   font-family: var(--font-app);
@@ -392,7 +400,6 @@
   align-items: center;
   gap: 8px;
 }
-
 
 .data-table__page-btn {
   display: inline-flex;
@@ -475,4 +482,47 @@
     width: calc(100% - 16px);
     max-width: 270px;
   }
+}
+
+.data-table__th--date,
+.data-table__td--date {
+  @include down($bp-tablet) {
+    display: none;
+  }
+}
+
+.data-table__th--org,
+.data-table__td--org {
+  @include down($bp-mobile) {
+    display: none;
+  }
+}
+
+.data-table__td--empty {
+  text-align: center;
+  padding: 48px 16px !important;
+}
+
+.data-table__empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.data-table__empty-title {
+  margin: 0;
+  font-family: var(--font-app);
+  font-weight: var(--fw-600);
+  font-size: 16px;
+  color: var(--color-primary);
+}
+
+.data-table__empty-message {
+  margin: 0;
+  font-family: var(--font-app);
+  font-weight: var(--fw-400);
+  font-size: var(--fs-14);
+  color: var(--color-text-muted);
+  max-width: 320px;
 }
