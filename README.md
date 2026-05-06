@@ -6,9 +6,28 @@ Lendsqr Admin Console — Frontend Engineering Assessment. A responsive admin da
 
 ## 🔗 Live Demo
 
-**[View Live App](https://your-name-lendsqr-fe-test.vercel.app)**
+**[View Live App](https://ayoola-ayodele-lendsqr-fe-test-pqsmmlbs7.vercel.app/)**
 
 ---
+
+
+## 📸 Screenshots
+
+### Login Page
+![Login Page](public/screenshots/login.png)
+
+### Users Dashboard
+![Users Dashboard](public/screenshots/users.png)
+
+### Users Dashboard (Mobile)
+![Users Mobile](public/screenshots/users-mobile.png)
+
+### User Details
+![User Details](public/screenshots/user-details.png)
+
+### User Details (Mobile)
+![User Details Mobile](public/screenshots/user-details-mobile.png)
+
 
 ## 🚀 Features
 
