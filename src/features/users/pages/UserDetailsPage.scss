@@ -29,6 +29,14 @@
   }
 }
 
+@include down($bp-mobile) {
+  .user-detail__back {
+    padding-top: 40px;
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
+}
+
 // Header
 .user-detail__header {
   display: flex;
@@ -46,6 +54,12 @@
   font-size: 24px;
   line-height: 0;
   color: var(--color-primary);
+}
+
+@include down($bp-mobile) {
+  .user-detail__title {
+    padding-bottom: 16px;
+  }
 }
 
 .user-detail__actions {
@@ -88,7 +102,6 @@
   box-shadow: var(--shadow-card);
   margin-bottom: 32px;
 }
-
 
 .user-detail__profile {
   display: flex;
@@ -198,7 +211,9 @@
   color: var(--color-text-muted);
   white-space: nowrap;
   border-bottom: 2px solid transparent;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  transition:
+    color 0.15s ease,
+    border-color 0.15s ease;
 
   &:hover {
     color: var(--color-primary);
@@ -209,7 +224,6 @@
     border-bottom-color: var(--color-accent);
   }
 }
-
 
 .user-detail__btn--blacklist {
   color: var(--color-status-blacklisted);
@@ -266,7 +280,6 @@
 .user-detail__section:first-child .user-detail__grid {
   grid-template-columns: repeat(5, 1fr);
 }
-
 
 .user-detail__field {
   label {
@@ -337,8 +350,6 @@
     border: none;
   }
 
-
-
   .user-detail__tabs {
     padding: 0 20px;
   }
@@ -369,7 +380,6 @@
   }
 }
 
-
 .user-detail__guarantor-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -384,7 +394,6 @@
     border-bottom: none;
   }
 }
-
 
 .user-detail__error {
   display: flex;
