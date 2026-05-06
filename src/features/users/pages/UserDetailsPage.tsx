@@ -50,6 +50,8 @@ export default function UserDetailsPage() {
   const [activeTab, setActiveTab] = useState('General Details');
   const { modal, openModal, closeModal } = useModal();
 
+  console.log('🆔 ID from URL:', id);
+
   if (isLoading) return <Spinner />;
 
   if (error || !user) {

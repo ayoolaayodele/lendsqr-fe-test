@@ -5,8 +5,15 @@ export const useSearch = () => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isFirstRender = useRef(true);
 
   useEffect(() => {
+    // ✅ Don't navigate on first render (page refresh)
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     if (timer.current) clearTimeout(timer.current);
 
     timer.current = setTimeout(() => {

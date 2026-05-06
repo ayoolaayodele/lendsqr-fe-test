@@ -1,7 +1,7 @@
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import { createMemoryRouter, RouterProvider } from 'react-router-dom';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { describe, expect, it, vi, beforeEach } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import UserDetailsPage from './UserDetailsPage';
 
 vi.mock('../../../services/http/client', () => ({
@@ -61,7 +61,10 @@ function renderWithProviders(id = '69f8525b7b60f600e62b22dd') {
 }
 
 describe('UserDetailsPage', () => {
-  beforeEach(() => vi.clearAllMocks());
+  beforeEach(() => {
+    vi.clearAllMocks();
+    localStorage.clear();
+  });
 
   it('shows loading spinner initially', () => {
     (httpClient.get as ReturnType<typeof vi.fn>).mockReturnValue(new Promise(() => {}));
@@ -80,6 +83,8 @@ describe('UserDetailsPage', () => {
   it('shows error when user is not found', async () => {
     (httpClient.get as ReturnType<typeof vi.fn>).mockResolvedValue([]);
     renderWithProviders('nonexistent-id');
-    expect(await screen.findByText('User not found')).toBeInTheDocument();
+
+    expect(await screen.findByText('Error loading user')).toBeInTheDocument();
+    expect(screen.getByText('User not found')).toBeInTheDocument();
   });
 });
