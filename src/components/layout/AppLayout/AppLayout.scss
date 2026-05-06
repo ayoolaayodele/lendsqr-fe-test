@@ -18,12 +18,12 @@
 @include down($bp-laptop) {
   .app-layout__main {
     margin-left: 0;
-    padding: calc(var(--layout-topbar-height) + 32px) 24px 40px;
+    padding: calc(var(--layout-topbar-height) + 24px) 20px 40px; 
   }
 }
 
-@include down($bp-tablet) {
+@include down($bp-mobile) {
   .app-layout__main {
-    padding: calc(var(--layout-topbar-height) + 24px) 16px 32px;
+    padding: calc(var(--layout-topbar-height) + 20px) 12px 32px; /* ✅ Even more top padding for mobile */
   }
 }
