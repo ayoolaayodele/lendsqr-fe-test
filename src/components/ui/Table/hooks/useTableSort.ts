@@ -1,19 +1,24 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 
 export const useTableSort = () => {
-  const [sortKey, setSortKey] = useState<string | null>(null);
-  const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc');
+  const [sort, setSort] = useState<{ key: string | null; dir: 'asc' | 'desc' | null }>({
+    key: null,
+    dir: null,
+  });
 
-  const handleSort = useCallback((key: string) => {
-    setSortKey((prev) => {
-      if (prev === key) {
-        setSortDir((d) => (d === 'asc' ? 'desc' : 'asc'));
-        return prev;
+  const handleSort = (key: string) => {
+    setSort((prev) => {
+      if (prev.key !== key) {
+        // New column → sort ascending
+        return { key, dir: 'asc' };
       }
-      setSortDir('asc');
-      return key;
+      if (prev.dir === 'asc') {
+        // Same column, was ascending → sort descending
+        return { key, dir: 'desc' };
+      }
+      return { key: null, dir: null };
     });
-  }, []);
+  };
 
-  return { sortKey, sortDir, handleSort };
+  return { sortKey: sort.key, sortDir: sort.dir, handleSort };
 };
