@@ -1,73 +1,160 @@
-# React + TypeScript + Vite
+# lendsqr-fe-test
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Lendsqr Admin Console — Frontend Engineering Assessment. A responsive admin dashboard that mirrors the Figma design with pixel-perfect fidelity, built with React, TypeScript, and SCSS.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🔗 Live Demo
 
-## React Compiler
+**[View Live App](https://your-name-lendsqr-fe-test.vercel.app)**
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 🚀 Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Login** — Email/password validation with Formik + Yup, password visibility toggle, disabled submit when invalid
+- **Dashboard Layout** — Fixed topbar with debounced search, collapsible sidebar with customer/business/settings sections, organization switcher
+- **Users Management** — Stats cards with live API data, sortable data table with 500 records, column-level filters (debounced text, select dropdowns, date picker), action menu with confirmation modals
+- **User Details** — Profile card with tier stars and account balance, tabbed navigation, detailed sections (Personal Information, Education, Socials, Guarantor), localStorage caching
+- **Responsive** — Optimized for desktop, tablet, and mobile with collapsing sidebar and reduced table columns
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## 🛠 Tech Stack
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+| Category      | Technology                             |
+|---------------|----------------------------------------|
+| Framework     | React 19 + TypeScript 6                |
+| Styling       | SCSS (Sass) with CSS Custom Properties |
+| Routing       | React Router v7                        |
+| Forms         | Formik + Yup                           |
+| Data Fetching | TanStack React Query v5 + Axios        |
+| Testing       | Vitest + React Testing Library + jsdom |
+| Date Picker   | react-datepicker                       |
+| Build Tool    | Vite                                   |
+| Linting       | ESLint + Prettier                      |
+| Mock API      | Mocki.io (500 users)                   |
+
+---
+
+## 📁 Project Structure
+
+```
+src/
+├── app/                  # Router and providers
+├── assets/               # Icons, images, fonts
+├── components/
+│   ├── layout/           # AppLayout, Sidebar, Topbar
+│   └── ui/               # Button, Input, Modal, DataTable, StatsCard, Spinner, StatusBadge
+├── features/
+│   ├── auth/             # Login page, validation
+│   ├── dashboard/        # Dashboard placeholder
+│   └── users/            # Users page, user details
+│       ├── api/          # API service functions
+│       ├── components/   # UserProfileCard, UserDetailField, UserDetailSection
+│       ├── data/         # Configs (stats, status, table columns, tabs)
+│       ├── hooks/        # React Query hooks, useModal, useFilteredUsers, useUserStats
+│       ├── pages/        # Page components
+│       ├── storage/      # LocalStorage utilities
+│       └── types/        # TypeScript interfaces
+├── services/             # HTTP client
+├── styles/
+│   ├── base/             # Reset, globals
+│   └── tokens/           # Colors, typography, spacing, breakpoints, effects
+├── utils/                # Constants, formatters, error handler
+└── tests/                # Test setup
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+## 🎨 Design Tokens
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+All styling is driven by CSS custom properties extracted from Figma. No hardcoded values.
+
+- **Colors:** `--color-primary`, `--color-accent`, `--color-status-active`, etc.
+- **Typography:** `--font-app` (Work Sans), `--fs-14`, `--fw-600`, etc.
+- **Effects:** `--shadow-card`, `--shadow-sidebar`
+- **Breakpoints:** `$bp-mobile: 480px`, `$bp-tablet: 768px`, `$bp-laptop: 1024px`
+
+---
+
+## ⚙️ Getting Started
+
+### Prerequisites
+
+- Node.js 18+ (v24.8.0 recommended)
+- npm 9+ (v11.6.0 recommended)
+
+### Installation
+
+```bash
+npm install
+npm run dev
 ```
+
+---
+
+## 🧪 Testing
+
+17 unit tests covering positive and negative scenarios:
+
+| Test File                | Tests | Coverage                                                          |
+|--------------------------|-------|-------------------------------------------------------------------|
+| LoginPage.test.tsx       | 5     | Validation errors, password toggle, disabled button, valid submit |
+| UsersPage.test.tsx       | 5     | Render, stats cards, loading state, error state, table data       |
+| UserDetailsPage.test.tsx | 3     | Loading, user details, not found error                            |
+| DataTable.test.tsx       | 4     | Headers, rows, empty state, pagination                            |
+
+```bash
+npm run test
+```
+
+---
+
+## 📜 Available Scripts
+
+| Command           | Description                 |
+|-------------------|-----------------------------|
+| `npm run dev`     | Start development server    |
+| `npm run build`   | Build for production        |
+| `npm run test`    | Run unit tests              |
+| `npm run lint`    | Run ESLint                  |
+| `npm run check`   | Run lint + test + build     |
+
+---
+
+## 🧱 Architecture Decisions
+
+- **Feature-Based Architecture** — Each feature is self-contained with its own components, hooks, API, types, and data. Modules can be developed and tested independently.
+- **Custom Hooks** — Business logic extracted into reusable hooks (`useTableFilters`, `useTablePagination`, `useUserStats`, etc.) keeping components focused on rendering.
+- **Design Token System** — All visual properties are CSS custom properties, enabling consistent theming and eliminating hardcoded values.
+- **Client-Side Processing** — With 500 records, filtering, sorting, and pagination happen client-side for instant responsiveness. Debounced inputs (400ms) prevent jank.
+- **Local Storage Caching** — User details are persisted in localStorage to reduce redundant API calls on repeat visits.
+
+---
+
+## 📱 Responsive Design
+
+| Breakpoint        | Layout                                                |
+|-------------------|-------------------------------------------------------|
+| Desktop (1280px+) | Full sidebar + 4-column stats grid                    |
+| Laptop (1024px)   | Collapsed sidebar, 3-column stats                     |
+| Tablet (768px)    | Hidden sidebar, 2-column stats, reduced table columns |
+| Mobile (480px)    | Single column, essential columns only                 |
+
+---
+
+## ✍️ Commit Conventions
+
+Commits follow [Conventional Commits](https://www.conventionalcommits.org/):
+
+| Prefix       | Usage               |
+|--------------|---------------------|
+| `feat:`      | New features        |
+| `fix:`       | Bug fixes           |
+| `chore:`     | Maintenance         |
+| `test:`      | Tests               |
+| `style:`     | Styling             |
+| `refactor:`  | Code restructuring  |
+
+**Scopes:** `auth`, `users`, `ui`, `layout`, `styles`, `infra`

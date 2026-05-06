@@ -51,7 +51,24 @@ export default function UserDetailsPage() {
   const { modal, openModal, closeModal } = useModal();
 
   if (isLoading) return <Spinner />;
-  if (error || !user) return <div>User not found</div>;
+
+  if (error || !user) {
+    return (
+      <section className="user-detail">
+        <button className="user-detail__back" type="button" onClick={() => navigate('/users')}>
+          <img src={arrowLeftIcon} alt="" />
+          <span>Back to Users</span>
+        </button>
+        <div className="user-detail__error">
+          <div className="user-detail__error-icon">!</div>
+          <p className="user-detail__error-title">Error loading user</p>
+          <p className="user-detail__error-message">
+            {error?.message || 'User not found. Please try again.'}
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="user-detail">
@@ -137,6 +154,7 @@ export default function UserDetailsPage() {
               <UserDetailField key={f.label} {...f} />
             ))}
           </UserDetailSection>
+
           <UserDetailSection title="Guarantor" noGrid>
             {user.guarantors.map((g, i) => (
               <div key={i} className="user-detail__guarantor-grid">

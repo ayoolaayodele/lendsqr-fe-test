@@ -12,10 +12,20 @@
   box-shadow: var(--shadow-topbar);
 }
 
+
+
 .topbar__brand {
   display: flex;
   align-items: center;
   padding-left: 30px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font: inherit;
+
+  &:hover {
+    opacity: 0.8;
+  }
 }
 
 .topbar__logo {
@@ -24,7 +34,6 @@
   height: auto;
 }
 
-/* Figma: control left 343px from viewport = 283px sidebar + 60px; control width 400px */
 .topbar__search {
   width: 100%;
   min-width: 0;

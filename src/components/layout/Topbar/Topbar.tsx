@@ -1,21 +1,22 @@
-import { useSearch } from './hooks/useSearch';
-import logoLendsqr from '../../../assets/icons/logo-lendsqr.svg';
-import searchIcon from '../../../assets/icons/icon-search.svg';
+import { useNavigate } from 'react-router-dom';
 import bellIcon from '../../../assets/icons/icon-bell.svg';
 import chevronDownIcon from '../../../assets/icons/icon-chevron-down-field.svg';
+import searchIcon from '../../../assets/icons/icon-search.svg';
+import logoLendsqr from '../../../assets/icons/logo-lendsqr.svg';
 import profileAvatar from '../../../assets/images/avatar-profile.png';
 import Input from '../../ui/Input/Input';
+import { useSearch } from './hooks/useSearch';
 import './Topbar.scss';
 
 export default function Topbar() {
   const { query, setQuery, submitSearch } = useSearch();
+  const navigate = useNavigate();
 
   return (
     <header className="topbar">
-      <div className="topbar__brand">
+      <button className="topbar__brand" type="button" onClick={() => navigate('/users')}>
         <img className="topbar__logo" src={logoLendsqr} alt="lendsqr" />
-      </div>
-
+      </button>
       <form className="topbar__search" role="search" onSubmit={submitSearch}>
         <label className="sr-only" htmlFor="global-search">
           Search for anything

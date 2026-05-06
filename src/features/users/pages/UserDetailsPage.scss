@@ -385,6 +385,53 @@
   }
 }
 
+
+.user-detail__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  gap: 12px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-faint);
+  border-radius: var(--radius-4);
+  box-shadow: var(--shadow-card);
+}
+
+.user-detail__error-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-status-blacklisted-bg);
+  color: var(--color-status-blacklisted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-app);
+  font-weight: var(--fw-700);
+  font-size: 24px;
+  margin-bottom: 4px;
+}
+
+.user-detail__error-title {
+  margin: 0;
+  font-family: var(--font-app);
+  font-weight: var(--fw-600);
+  font-size: 16px;
+  color: var(--color-primary);
+}
+
+.user-detail__error-message {
+  margin: 0;
+  font-family: var(--font-app);
+  font-weight: var(--fw-400);
+  font-size: var(--fs-14);
+  color: var(--color-text-muted);
+  max-width: 400px;
+}
+
 @include down($bp-laptop) {
   .user-detail__guarantor-grid {
     grid-template-columns: repeat(3, 1fr);
