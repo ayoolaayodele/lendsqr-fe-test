@@ -1,4 +1,4 @@
-export const API_BASE_URL = 'https://api.mocki.io/v2/jk0qkf82';
+export const API_BASE_URL = 'https://api.mocki.io/v2/euqkqad4';
 export const API_TIMEOUT = 10000;
 
 export const ENDPOINTS = {
